@@ -1,18 +1,40 @@
 //import React, {useState} from 'react'
-import React, {Component} from 'react'
+import logo from './logo.jpg';
 import styled from 'styled-components'
+import { Link } from 'react-router-dom';
+import './Register.css';
 
 ///////////////////////////////////////////////////////////////////////////////
 /////////////////////////////// STYLES ///////////////////////////////////////
 
+const Container= styled.div`
+    text-align: left;
+    margin-top: 0vh;
+    width: 100%;
+    margin: 0;
+    padding:0;
+    position:relative;
+    display: flex;
+`;
 
-const Contenedor = styled.form`
+
+const Half__50 = styled.div`
+    align-items:center;
     text-align: center;
     margin-top: 0vh;
+    width: 49%;
+    margin: 0;
+    padding:0;
+    height: 100vh;
+    background: #f7f7f7;
+`;
+
+const FormRegister = styled.form`
+    text-align: right;
     width: 45%;
-    margin-left: 0%;
-    box-shadow: 0 5px 10px 0 white;
     border-radius: 5px;
+    margin-left: 20%;
+    padding-top:30%;
 `;
 
 const Input = styled.input`
@@ -20,18 +42,19 @@ const Input = styled.input`
     border-top: 0;
     border-left: 0;
     border-right:0;
-    background:#282c34;
+    background:#f7f7f7;
     border-color:#90A4AE;
-    width:60%;
+    width:100%;
     color: #90A4AE;
     font-size:20px;
+    margin-left: 0;
 `;
 
 const Radio__label = styled.label`
  // background: ${props => props.primary ? 'greenyellow' : 'firebrick'};
  color: #90A4AE;
   &:hover {
-    color: white;
+    color: black;
 //opacity: 0.7;
     cursor: pointer;
   }
@@ -56,39 +79,36 @@ const Boton = styled.button`
     }
 `;
 
+const Paragraph = styled.p`
+    font-size: 10px;
+    color: #90A4AE;
+    background:#f7f7f7;
+`;
+
+
+const Image = styled.img`
+    height: 400px;
+    pointer-events: none;
+    margin-left: 5%;
+    padding-top:10%;
+`;
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-let users = []
-class Login extends Component{
-    state = {
-        email:'',
-        password:'',
-        user:'',
-    }
 
-    handleInputChange = e =>{
-        const {name, value, id, type} = e.target
-        this.setState({[name]: type === 'radio' ? id : value})
-    }   
 
-    createUser = e =>{
-        const {email, password, user} = this.state
-        const newUser = {
-            email,
-            password,
-            user
-        }
-        users = users.concat(newUser)
-        this.setState({message: '¡Usuario creado!'})
-        console.log(users);
-        e.preventDefault()
-    }
-    render(){
-        const {email, password, user} = this.state
-        return (
-            <Contenedor onSubmit={this.createUser}> 
-                <div onChange={this.handleInputChange}>
+function Register ({
+    email, 
+    password, 
+    user, 
+    userValidation,
+    handleInputChange
+}){ 
+    return (
+    <Container>    
+        <Half__50>
+            <FormRegister onSubmit={userValidation}>
+                <div onChange={handleInputChange}>
                 <input 
                     type='radio'
                     id='admin'
@@ -96,15 +116,15 @@ class Login extends Component{
                     value={user}
                     required
                 />
-                <Radio__label htmlFor='admin'>Administrador</Radio__label>
-
+                <Radio__label htmlFor='admin'>     Inversionista</Radio__label>
+                <br/>
                 <input 
                     type='radio'
                     id='resident'
                     name='user'
                     value={user}
                 />
-                <Radio__label htmlFor='resident'>Residente</Radio__label>
+                <Radio__label htmlFor='resident'>    Gestor de Proyectos</Radio__label>
                 </div>
 
                 <label htmlFor='email'></label>
@@ -114,8 +134,8 @@ class Login extends Component{
                     id='email' 
                     name='email'
                     value={email}
-                    onChange={this.handleInputChange}
-                    placeholder='email'
+                    onChange={handleInputChange}
+                    placeholder='   email'
                     required
                 />
 
@@ -127,89 +147,20 @@ class Login extends Component{
                     id='password'
                     name='password'
                     value={password}
-                    onChange={this.handleInputChange}
-                    placeholder='Password'
+                    onChange={handleInputChange}
+                    placeholder='   Password'
                     required
                 />
 
                 <br/>
                 <br/>
                 <Boton>Ingresar</Boton>
-            </Contenedor>
-        )
-    }
+                <Paragraph>¿No tienes una cuenta? <Link to="/register" className="Register-link">Registrarme</Link></Paragraph>
+            </FormRegister>
+        </Half__50>
+        <Image src={logo} className="App-logo-r" alt="logo" />
+    </Container> 
+     )
+    
 } 
-// const Registro = () => {
-
-//     const [state, setState] = useState({email:'', password:'', user:''})
-    
-//     const handleInputChange = e =>{
-//         let {name, value, id, type} = e.target
-//         setState({...state, [name]: type === 'radio' ? id : value}) 
-//     }
-
-//     const createUser = e =>{
-//         const {email, password, user} = state
-//         const newUser = {
-//             email,
-//             password,
-//             user
-//         }
-//         users = users.concat(newUser)
-//         console.log(users)
-//         e.preventDefault()
-//     }
-    
-//     const {email, password, user} = state
-//     return (
-//         <form onSubmit={createUser}> 
-//             <div onChange={handleInputChange}>
-//             <input 
-//                 type='radio'
-//                 id='admin'
-//                 name='user'
-//                 value={user}
-//             />
-//             <label htmlFor='admin'>Administrador</label>
-
-//             <input 
-//                 type='radio'
-//                 id='resident'
-//                 name='user'
-//                 value={user}
-//             />
-//             <label htmlFor='resident'>Residente</label>
-//             </div>
-
-//             <br/>
-//             <label htmlFor='email'>Email</label>
-//             <br/>
-//             <input
-//                 type='email' 
-//                 id='email' 
-//                 name='email'
-//                 value={email}
-//                 onChange={handleInputChange}
-//             />
-
-//             <br/>
-//             <label htmlFor='password'>Password</label>
-//             <br/>
-//             <input
-//                 type='password'
-//                 id='password'
-//                 name='password'
-//                 value={password}
-//                 onChange={handleInputChange}
-//             />
-
-//             <br/>
-//             <button>Registrarme</button>
-//         </form>
-//     )
-// }
-
-
-
-
-export default Login
+export default Register

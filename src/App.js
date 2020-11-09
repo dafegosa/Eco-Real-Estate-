@@ -1,7 +1,12 @@
 import React, {Component} from 'react';
-import Register from './Register'
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import Register from './Register';
 import './App.css';
 import { data } from './data';
+import Home from './Home';
+import Login from './Login';
+
+
 
 
 class App extends Component {
@@ -33,20 +38,53 @@ createUser = e =>{
   })
   console.log(this.state.users);
 }
+
+UserValidation = e =>{
+  e.preventDefault();
+  const {email, password, user} = this.state
+  const {eEmail, ePassword, eUser} = e.target
+  const resultado =   this.state.useres.filter(user => email !== eEmail)
+  console.log(resultado);
+
+  
+}
   render() {
     const {email, password, user} = this.state;
     return (
-      <div className="App">
-        <header className="App-header">
-          <Register
-            email={email}
-            password={password}
-            price={user}
-            createUser={this.createUser.bind(this)}
-            handleInputChange={this.handleInputChange.bind(this)}
-          />        
-        </header>
-      </div>
+      <BrowserRouter>
+        <div className="App">
+          <header className="App-header">
+            <Switch>
+              <Route
+                path='/home'
+                component={Home}
+              />
+              <Route
+              path = '/register' 
+              render = {() => 
+                <Register
+                  email={email}
+                  password={password}
+                  price={user}
+                  createUser={this.createUser}
+                  handleInputChange={this.handleInputChange}
+                />
+              }/>
+              <Route
+              path = '/login' 
+              render = {() => 
+                <Login
+                  email={email}
+                  password={password}
+                  price={user}
+                  createUser={this.UserValidation}
+                  handleInputChange={this.handleInputChange}
+                />
+              }/>
+            </Switch>
+          </header>
+        </div>
+      </BrowserRouter>
     );
   }
 }
